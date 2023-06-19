@@ -1,0 +1,78 @@
+# DSA456V1A
+# Lab 3
+# Student: Chungon Tse
+# ID: 154928188
+# Date: 15 Feb 2023
+# Part B
+
+def function1(value, number):
+	if (number == 0):
+		return 1
+	elif (number == 1):
+		return value
+	else:
+		return value * function1(value, number-1)
+
+function1 is actually a factorial recursive function.
+In lines 2-5, the comparison for 0 or 1 are 1 + 1 = 2 constant operations.
+In the else statement, recursively, it returns value multiplying function1(value, number - 1), the "number" parameter
+being number - 1, or (n - 1), followed by (n - 2), (n - 3), ..., up to just (1).
+The general count of "else" is
+(1 + 1 + function1(value, n - 1)), then next time (1 + 1 + (1 + 1 + function1(value, n - 2))...
+The total operations = 2 + 2 + 2 + ... 2 for n times = 2n.
+In the long run, the time complexity is O(n) and it is linear.
+
+
+
+def recursive_function2(mystring,a, b):
+	if(a >= b ):
+		return True
+	else:
+		if(mystring[a] != mystring[b]):
+			return False
+		else:
+			return recursive_function2(mystring,a+1,b-1)
+
+def function2(mystring):
+	return recursive_function2(mystring, 0,len(mystring)-1)
+
+To set up functions to analyze the above, let
+
+def count_op_re(n):
+    if n <= 1:
+        return 1
+    else:
+        return 3 + count_op_re(n - 2)
+
+def count_op(n):
+    return count_op_re(n) + 1
+
+In count_op_re, the base case is 1 operation. In the else statement, if mystring[a] == mystring[b], then the
+recursive call means it goes with (n - 2) as the substring length because (a + 1) whereas (b - 1). Line 5 of
+recursive_function2 costs 2 operations for comparison.
+T(n) = 1 + 2 + T(n - 2) (recursive calls) = 3 + T(n - 2)
+In count_op, it is count_op_re + 1 operation = 4 + T(n - 2)
+Overall, function2 requires T(n)=O(n).
+
+
+
+def function3(value, number):
+	if (number == 0):
+		return 1
+	elif (number == 1):
+		return value
+	else:
+		half = number // 2
+		result = function3(value, half)
+		if (number % 2 == 0):
+			return result * result
+		else:
+			return value * result * result
+
+function3 calculates value to the power of number but by halving the value. Other than 0 and 1 as number, all
+subsequent numbers require operations in the else and nested-if statements, and recursively.
+Basically, that is T(n) = T(n/2) + constant time O(1). As the sequence progresses, the sum of constant time
+is 1 + 1/2 + 1/4 + ... + 1/2^(log n), added by log n times, since the number is halved every turn.
+The number of operations is log n times in the long run to run until number becomes 1 or 0.
+
+T(n) = T(n/2) + O(1) = T(n/4) + O(1) + O(1) = ... = T(1) + O(log n) = O(log n)
