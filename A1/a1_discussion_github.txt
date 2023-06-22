@@ -1,0 +1,40 @@
+DSA456V1A
+Assignment 1 Part 1 and Part 2
+Student: Chungon Tse
+ID: 154928188
+Date: 1 Mar 2023
+Part 1
+Step 1 and Step 2 (first part): refer to code for part 1.
+Step 2:
+bubble sort:
+The best-case scenario is when the list is already sorted, in which case it takes one take through the list and no swap is needed. T(n) = O(n).
+The worst-case scenario is when the list is totally reversed, in which case it takes n-1 passes through the list requiring n-1 swaps and n-1 comparisons. T(n) = O(n2).
+The average-case scenario is when the list is randomly ordered, in which case it takes n-1 passes through the list requiring n/2 swaps and n/2 comparisons. Still, T(n) = O(n2).
+selection sort:
+The best-case scenario is when the list is already sorted, in which case it takes n-1 comparisons, a count of (n-1) *2 times, but no swap is needed. T(n) = O(n2).
+The worst-case scenario is when the list is totally reversed, in which case it takes n(n-1)/2 comparisons and n swaps, with a count of (n^2 – n) *2 times. T(n) = O(n2).
+The average-case scenario takes around n(n-1)/2 comparisons and n swaps on average. T(n) = O(n2).
+insertion sort:
+The best-case scenario is when the list is already sorted, in which case it takes just n comparisons across each element. T(n) = O(n).
+The worst-case scenario is when the list is totally reversed, in which case it takes all the comparisons and swaps in the outer and inner loops. T(n) = O(n2).
+The average-case scenario is when the list is randomly distributed. The inner loop runs on average. T(n) = O(n2).
+quick sort:
+The best-case scenario is when the pivot divides the list into two equal parts, in which case it takes around T(n) = O(n * log n).
+The worst-case scenario is when the partitioning results in size 1 and n-1, e.g. when the list is already sorted or values across the list are identical, or nearly so. That will incur T(n) = O(n2) comparisons and swaps.
+On average, when the size of n grows, the sorting takes a rate correlated to n * log n. The partitions are around n/2 and takes O(n) time. By recursion, the input size reduces by a factor of 2. Thus, T(n) = O(n * log n).
+insertion sort (divide or sublist):
+The best-case scenario is when it is sorted. T(n) = O(n) with a simple check of one iteration.
+The worst-case scenario is when the list is reversed. T(n) = O(n2).
+Step 3: refer to spreadsheet graphs.
+Analysis: Using a perfectly reversed list of a sorting size 1000 where the list is from 1000 to 1, etc., the worst cases can show all sorting algorithms will go to T(n) = O(n2) as in the above analysis.
+Quick sort also tends to be O(n2), but starting from a certain threshold (1000 in the code for this exercise) its operations increase at a lower rate than the others. Overall, quick sort is consistently more efficient and is in fact the most efficient, but it depends on the threshold. Under the threshold, it is just as efficient as the both variants of insertion sort. It is more advantageous for a larger sorting size.
+Step 4: refer to spreadsheet graphs.
+Whether we compare the number of operations and sorting size or time consumption and sorting size, all five sorting algorithms will tend to be T(n) = O(n2), but quick sort stands out from the rest for being the quickest with significantly fewer operations for the same calculation result even in the worst-case scenario. The quick sort took just more than 1 second as opposed to over 2 minutes with bubble sort or insertion sort for a size of 50000.
+Part 2
+Part A: refer to drawings.
+Part B: refer to code for part 2.
+Part C:
+def insert(self, data): T(n) = O(n) in the worst case where n is the number of nodes. For instance, when an inserted node is greater than the front node but less than the back node. That takes turns to find another place to insert the new code.
+def remove(self, data): T(n) = O(n) in the worst case when the node for removal is in the middle of the list, so it takes turns to go through the list to find this node.
+def is_present(self, data): T(n) = O(n) in the worst case when the target is the last node or is not present, requiring a turn through the entire list.
+def __len__(self): T(n) = O(1) in any case because presumably the length increments every time through the insert function and __len__ itself does not go through the node list, so the operation time is constant.
