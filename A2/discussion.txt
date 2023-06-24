@@ -1,0 +1,112 @@
+Assignment 2
+Student: Chungon Tse
+Date: 26 Mar 2023
+Part A: Analysis of 6 functions about SortedTable
+(Referring to detailed analysis below)
+def insert(self, key, value)
+The insert function is “slightly” coupled with the search function but overall, given that it has a nested for loop in its latter part, if the Record with the same key is not found immediately, its time complexity should generally tend to be O(n2+6n+7) = O(n2) for n records for the worst case because of a bubble sort.
+def modify(self, key, value)
+The modify function is like insert and tries to find the Record to modify its key. It iterates and goes through records until it finds that key, so the time complexity tends to be O(n+5) = O(n) for n records in the table.
+def remove(self, key)
+The remove function is highly similar to modify but when it finds a record with the key, it shifts one index to the left, and sets the last index to None. This process takes O(8 + 2n) = O(n) in traversing through the list of size n.
+def search(self, key)
+The search function is also like modify and remove in traversing through a list of size n. If we do a linear search, then the time complexity tends to be O(6 + n) = O(n), unless we find the key immediately.
+def capacity(self)
+capacity returns self.cap. Referring to __init__, cap is a single value for length and as such the time complexity is O(1).
+def __len__(self)
+__len__ returns the number of non-empty elements of the table by traversing through the table, and as such it runs O(6 + n) = O(n).
+Part B
+We could adopt binary search in the search function. In SortedTable, it is true that cap is only a size of 32, so the difference between binary search and linear search is not significant, but it may help with a larger cap.
+For the insert function specifically, we could adopt something else other than bubble sort which runs the slowest among all sorting algorithms in general. Again, cap is just 32, but I would consider merge sort unless the cap could be so large that quick sort might be superior to both.
+Detailed analysis in Part A:
+class SortedTable:
+    # packaging the key-value pair into one object
+    class Record:
+        def __init__(self, key, value):
+            self.key = key
+            self.value = value
+
+    def __init__(self, cap=32):
+        # this initializes a list of of capacity length with None
+        self.the_table = [None for i in range(cap)]
+        self.cap = cap
+
+    def insert(self, key, value):
+        if (self.search(key) != None):
+            return False  # 1
+
+        if (len(self) == self.cap):
+            # increase the capacity if list is full
+            new_table = [None for i in range(self.cap * 2)]  # 1
+            for i in range(self.cap):  # n
+                new_table[i] = self.the_table[i]  # n
+            self.the_table = new_table  # 1
+            self.cap *= 2  # 1
+
+        self.the_table[len(self)] = self.Record(key, value)  # 1
+        size = len(self)  # 1
+        for i in range(0, size - 1):  # n
+            for j in range(0, size - 1 - i):  # n^2
+                if (self.the_table[j].key > self.the_table[j + 1].key):  # 1
+                    tmp = self.the_table[j]  # n
+                    self.the_table[j] = self.the_table[j + 1]  # n
+                    self.the_table[j + 1] = tmp  # n
+        return True  # 1
+
+    # O(n) = 6n + 7 + n^2 = n^2 + 6n + 7
+
+    def modify(self, key, value):
+        i = 0  # 1
+        while (i < len(self) and self.the_table[i].key != key):  # n
+            i += 1  # 1
+        if (i == len(self)):  # 1
+            return False
+        else:
+            self.the_table[i].value = value  # 1
+            return True  # 1
+
+    # O(n) = 5 + n
+
+    def remove(self, key):
+        i = 0  # 1
+        size = len(self)  # 1
+        while (i < size and self.the_table[i].key != key):  # n
+            i += 1  # 1
+        if (i == size):  # 1
+            return False  # 1
+        while (i + 1 < size):
+            self.the_table[i] = self.the_table[i + 1]  # n
+            i += 1  # 1
+        self.the_table[i] = None  # 1
+        return True  # 1
+
+    # O(n) = 8 + 2n
+
+    def search(self, key):
+        i = 0  # 1
+        size = len(self)  # 1
+        while i < size and self.the_table[i].key != key:  # n
+            i += 1  # 1
+        if i == size:  # 1
+            return None  # 1
+        else:
+            return self.the_table[i].value  # 1
+
+    # O(n) = 6 + n
+
+    def capacity(self):
+        return self.cap  # 1
+
+    # O(n) = 1
+
+    def __len__(self):
+        i = 0  # 1
+        count = 0  # 1
+        while (i < len(self.the_table)):  # n
+            if (self.the_table[i] != None):  # 1
+                count += 1  # 1
+            i += 1  # 1
+        return count  # 1
+
+    # O(n) = 6 + n
+
